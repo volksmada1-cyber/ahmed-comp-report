@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>تقرير مقارنة مرتبات - م. أحمد رجب</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root{ --bg:#f6f8fb; --card:#ffffff; --accent:#0f4c81; --muted:#6b7280; }
+    body{font-family:'Noto Naskh Arabic', system-ui, -apple-system, 'Segoe UI', Roboto, Arial; background:var(--bg); color:#0b1320; margin:0; padding:24px}
+    .container{max-width:960px;margin:0 auto}
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+    h1{font-size:20px;margin:0;color:var(--accent)}
+    .chip{background:#eef6ff;color:var(--accent);padding:6px 10px;border-radius:10px;font-weight:600}
+    .card{background:var(--card);border-radius:12px;padding:18px;box-shadow:0 6px 18px rgba(11,19,32,0.06);margin-bottom:16px}
+    .row{display:flex;gap:16px;flex-wrap:wrap}
+    .col{flex:1;min-width:280px}
+    .small{color:var(--muted);font-size:13px}
+    .highlighted-label{color:#0f4c81;font-weight:600;}
+    .kpi{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .kpi .num{font-size:22px;font-weight:700;color:var(--accent)}
+    ul{margin:8px 0 0 0;padding:0 0 0 20px}
+    .legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+    .legend-item{display:flex;gap:6px;align-items:center}
+    .dot{width:12px;height:12px;border-radius:3px}
+    footer{font-size:12px;color:var(--muted);margin-top:10px;text-align:center}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>تقرير مُلخّص — مقارنة تعويضات م. أحمد رجب</h1>
+        <div class="small">نسخة عرض لمهندس خالد صبري</div>
+      </div>
+      <div class="chip">نوفمبر — بيانات مرجعية</div>
+    </header>
+
+    <section class="card">
+      <div class="kpi">
+        <div>
+          <div class="highlighted-label">الراتب الحالي (شامل بدل)</div>
+          <div class="num">≈ 40,000 ج.م</div>
+        </div>
+        <div>
+          <div class="small">التقييم الأخير (الربع الثالث)</div>
+          <div class="num">95%</div>
+        </div>
+        <div>
+          <div class="small">نطاق القيمة العادلة الموصى به</div>
+          <div class="num">65,000 — 75,000 ج.م</div>
+        </div>
+      </div>
+      <p class="small" style="margin-top:12px">اعتمدت التوصية على مسؤوليات م. أحمد رجب الواسعة (تسويق، تطوير، ERP، IT) والتواصل المباشر مع الإدارة العليا ونتائج ملموسة.</p>
+    </section>
+
+    <div class="row">
+      <div class="col card">
+        <canvas id="barChart"></canvas>
+        <div class="legend">
+          <div class="legend-item"><span class="dot" style="background:#0f4c81"></span><span class="small">قطاع الصناعات والمعدات (متوسط)</span></div>
+          <div class="legend-item"><span class="dot" style="background:#1f8a5f"></span><span class="small">قطاع FMCG</span></div>
+          <div class="legend-item"><span class="dot" style="background:#e76f51"></span><span class="small">راتب أحمد الحالي</span></div>
+          <div class="legend-item"><span class="dot" style="background:#f4a261"></span><span class="small">النطاق المقترح</span></div>
+        </div>
+      </div>
+
+      <div class="col card">
+        <canvas id="pieChart"></canvas>
+        <div class="small" style="margin-top:8px">توزيع المسؤوليات الأساسية (تقديري)</div>
+      </div>
+    </div>
+
+    <section class="card">
+      <h3 style="margin-top:0">ملخص النقاط الجوهرية</h3>
+      <ul>
+        <li>الراتب الحالي ~40k (شامل بدل)، مع تقييم أداء ربع ثالث 95%.</li>
+        <li>م. أحمد رجب مسؤول عن أقسام: التسويق، التطوير، ERP، IT، العقود والمراسلات، العلاقات الخارجية، المؤتمرات والتنسيق مع مركز البحوث الزراعية.</li>
+        <li>النطاق العادل المقترح للراتب بناءً على حجم المهام: 65k–75k ج.م شهريًا.</li>
+        <li>توصية: مراجعة مستوى التعويضات بما يتناسب مع حجم الإدارة والمهام في بداية العام الجديد.</li>
+      </ul>
+    </section>
+  </div>
+
+<script>
+const barLabels = ['قطاع الصناعات والمعدات (متوسط)','قطاع الصناعات والمعدات (مستوى عالي)','FMCG (متوسط)','FMCG (عالي)','راتب أحمد','نطاق أدنى','نطاق أعلى'];
+const barData = [45000,65000,80000,200000,40000,65000,75000];
+
+const ctx = document.getElementById('barChart').getContext('2d');
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: barLabels,
+    datasets: [{
+      label: 'جنيه مصري شهري',
+      data: barData,
+      backgroundColor: ['#0f4c81','#0f4c81','#1f8a5f','#1f8a5f','#e76f51','#f4a261','#f4a261'],
+      borderRadius: 6
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: {
+        ticks: {
+          callback: function(value) {
+            return value >= 100000 ? (value / 1000) + 'k' : value;
+          }
+        }
+      }
+    }
+  }
+});
+
+const pieCtx = document.getElementById('pieChart').getContext('2d');
+new Chart(pieCtx, {
+  type: 'doughnut',
+  data: {
+    labels: ['تسويق & تطوير', 'ERP', 'IT', 'عقود ومراسلات خارجية'],
+    datasets: [{ data: [45, 20, 15, 20], backgroundColor: ['#0f4c81', '#1f8a5f', '#f4a261', '#e76f51'] }]
+  },
+  options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+});
+</script>
+</body>
+</html>
